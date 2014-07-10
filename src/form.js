@@ -49,13 +49,13 @@ angular.module('angularPayments')
 
       form.bind('submit', function() {
 
-        expMonthUsed = scope.expMonth ? true : false;
-        expYearUsed = scope.expYear ? true : false;
+        expMonthUsed = scope.card.expMonth ? true : false;
+        expYearUsed = scope.card.expYear ? true : false;
 
         if(!(expMonthUsed && expYearUsed)){
-          exp = Common.parseExpiry(scope.expiry)
-          scope.expMonth = exp.month
-          scope.expYear = exp.year
+          exp = Common.parseExpiry(scope.card.expiry)
+          scope.card.expMonth = exp.month
+          scope.card.expYear = exp.year
         }
 
         var button = form.find('button');
@@ -64,7 +64,7 @@ angular.module('angularPayments')
         if(form.hasClass('ng-valid')) {
           
 
-          $window.Stripe.createToken(_getDataToSend(scope), function() {
+          $window.Stripe.createToken(_getDataToSend(scope.card), function() {
             var args = arguments;
             scope.$apply(function() {
               scope[attr.stripeForm].apply(scope, args);
@@ -80,8 +80,8 @@ angular.module('angularPayments')
           button.prop('disabled', false);
         }
 
-        scope.expiryMonth = expMonthUsed ? scope.expMonth : null;
-        scope.expiryYear = expYearUsed ? scope.expMonth : null;
+        scope.card.expiryMonth = expMonthUsed ? scope.card.expMonth : null;
+        scope.card.expiryYear = expYearUsed ? scope.card.expMonth : null;
 
       });
     }
